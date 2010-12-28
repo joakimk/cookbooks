@@ -1,0 +1,11 @@
+server {
+	server_name <%= @server_name %>;
+	listen 80;
+	
+  location / {
+    root <%= @root_dir %>/public;
+    passenger_enabled on;
+    rails_env development;
+  }
+}
+
