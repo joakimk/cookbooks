@@ -1,0 +1,38 @@
+{
+  "name": "memcached_source",
+  "description": "Installs memcached from source and provides a define to set up an instance of memcache via runit",
+  "long_description": "",
+  "maintainer": "Bukowskis",
+  "maintainer_email": "joakim.kolsjo;AT;bukowskis;DOT;com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "ubuntu": [
+
+    ],
+    "debian": [
+
+    ]
+  },
+  "dependencies": {
+    "runit": [
+
+    ]
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+  },
+  "groupings": {
+  },
+  "recipes": {
+  },
+  "version": "0.1"
+}
