@@ -18,7 +18,7 @@
     "recipes": {
     },
     "maintainer_email": "joakim.kolsjo;AT;gmail;DOT;com",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "conflicting": {
     },
     "name": "pxe_install_server",

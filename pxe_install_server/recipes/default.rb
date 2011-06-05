@@ -25,7 +25,7 @@ package "apache2"
 
 node[:pxe_install_server][:releases].each do |release, path|
   remote_file "/tmp/#{release}.iso" do
-    source "http://ftp.sunet.se/pub/Linux/distributions/ubuntu/ubuntu-cd/#{path}.iso"
+    source "http://releases.ubuntu.com/#{path}.iso"
     not_if { File.exists?("/var/www/#{release}") || File.exists?("/tmp/#{release}.iso") }
   end
 
@@ -40,9 +40,9 @@ node[:pxe_install_server][:releases].each do |release, path|
     cwd "/var/lib/tftpboot"
 
     code <<EOH
-      mkdir -p /var/lib/tftpboot/pxelinux.cfg &&
-      mkdir -p /var/lib/tftpboot/#{release} &&
-      cp -r /media/#{release}/install/netboot/* /var/lib/tftpboot/#{release} &&
+      mkdir -p pxelinux.cfg &&
+      mkdir -p #{release} &&
+      cp -r /media/#{release}/install/netboot/* #{release}/ &&
       ln -s #{release}/$(readlink /var/lib/tftpboot/#{release}/pxelinux.0) pxelinux.0.#{release}
 EOH
     not_if { File.exists?("/var/lib/tftpboot/pxelinux.0.#{release}") }
