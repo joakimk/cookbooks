@@ -1,0 +1,47 @@
+####### Custom config #######
+network --bootproto=static --ip=<%= @ip %> --netmask=255.255.0.0 --gateway=172.20.0.1 --nameserver=8.8.8.8 --device=eth0 --hostname <%= @hostname %>
+url --url http://172.20.0.100/<%= @release %>
+
+###### Shared config #######
+lang en_US
+langsupport en_US
+
+keyboard se
+mouse
+timezone Europe/Stockholm
+
+# Long random password (because it's required by kickstart and we don't need it)
+rootpw --iscrypted $1$akespNAm$r5wTfzYzk0rp/VyVASVKO.
+user --disabled
+
+# Reboot after installation
+reboot
+
+# Use text mode install
+text
+
+# Install OS instead of upgrade
+install
+
+# System bootloader configuration
+bootloader --location=mbr 
+zerombr yes
+
+clearpart --all --initlabel 
+part swap --size 512 
+part / --fstype ext3 --size 1 --grow
+
+auth  --useshadow  --enablemd5 
+firewall --disabled 
+
+# Do not configure the X Window System
+skipx
+
+%packages
+ssh
+
+###### Script to run after installing ######
+%post
+
+sed 's/172.20.0.100/se.archive.ubuntu.com/g' /etc/apt/sources.list > /tmp/a  && mv /tmp/a /etc/apt/sources.list
+
