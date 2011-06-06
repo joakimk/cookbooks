@@ -1,14 +1,17 @@
 ####### Custom config #######
 network --bootproto=static --ip=<%= @ip %> --netmask=255.255.0.0 --gateway=172.20.0.1 --nameserver=8.8.8.8 --device=eth0 --hostname <%= @hostname %>
-url --url http://172.20.0.100/<%= @release %>
 
 ###### Shared config #######
 lang en_US
 langsupport en_US
 
-keyboard se
+keyboard us
 mouse
 timezone Europe/Stockholm
+
+# Using the official mirror. You might want to create a local ubuntu mirror if you
+# need to install many machines.
+url --url http://archive.ubuntu.com/ubuntu
 
 # Long random password (because it's required by kickstart and we don't need it)
 rootpw --iscrypted $1$akespNAm$r5wTfzYzk0rp/VyVASVKO.
@@ -42,6 +45,4 @@ ssh
 
 ###### Script to run after installing ######
 %post
-
-sed 's/172.20.0.100/se.archive.ubuntu.com/g' /etc/apt/sources.list > /tmp/a  && mv /tmp/a /etc/apt/sources.list
 

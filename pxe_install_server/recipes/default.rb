@@ -26,13 +26,13 @@ package "apache2"
 node[:pxe_install_server][:releases].each do |release, path|
   remote_file "/tmp/#{release}.iso" do
     source "http://releases.ubuntu.com/#{path}.iso"
-    not_if { File.exists?("/var/www/#{release}") || File.exists?("/tmp/#{release}.iso") }
+    not_if { File.exists?("/var/lib/tftpboot/#{release}") || File.exists?("/tmp/#{release}.iso") }
   end
 
   bash "Mount iso" do
     code "mkdir -p /media/#{release} && mount -o loop /tmp/#{release}.iso /media/#{release}"
     not_if { 
-      File.exists?("/var/www/#{release}") || system("mount|grep #{release} 1> /dev/null")
+      File.exists?("/var/lib/tftpboot/#{release}") || system("mount|grep #{release} 1> /dev/null")
     }
   end
 
@@ -48,20 +48,9 @@ EOH
     not_if { File.exists?("/var/lib/tftpboot/pxelinux.0.#{release}") }
   end
 
-  bash "Copy ubuntu files" do
-    code "mkdir -p /var/www/#{release} && cp -r /media/#{release}/* /var/www/#{release}/"
-    not_if { File.exists?("/var/www/#{release}") }
-  end
-
   bash "Unmount and remove iso" do
     code "umount /media/#{release} && rm /tmp/#{release}.iso"
     only_if { system("mount|grep #{release} 1> /dev/null") }
-  end
-
-  # http://administratosphere.wordpress.com/2011/04/29/ubuntu-kickstart-installs-and-corrupt-packages-file/
-  bash "Prevent 'Debootstrap warning' error later on" do
-    code "gunzip /var/www/#{release}/dists/lucid/restricted/binary-amd64/Packages.gz"
-    not_if { !File.exists?("/var/www/#{release}/dists/lucid") || File.exists?("/var/www/#{release}/dists/lucid/restricted/binary-amd64/Packages") }
   end
 end
 
